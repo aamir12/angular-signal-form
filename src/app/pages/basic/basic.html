@@ -1,0 +1,49 @@
+<div class="form">
+  <h3>Basic Overview</h3>
+  <div class="field">
+    <label>Username:</label>
+    <input type="text" [formField]="reviewForm.username"
+      [class.invalid]="reviewForm.username().invalid() && reviewForm.username().touched()" />
+
+    @for (error of reviewForm.username().errors(); track error.kind) {
+    <div class="error">{{ error.message }}</div>
+    }
+  </div>
+  <div class="field">
+    <label>Role:</label>
+    <select [formField]="reviewForm.role">
+      <option value="user">User</option>
+      <option value="author">Author</option>
+      <option value="chef">Chef</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Email:</label>
+    <input type="email" [formField]="reviewForm.email"
+      [class.invalid]="reviewForm.email().invalid() && reviewForm.email().touched()" />
+    @for (error of reviewForm.email().errors(); track error.kind) {
+    <div class="error">{{ error.message }}</div>
+    }
+  </div>
+  <div class="field">
+    <label>Description:</label>
+    <textarea [formField]="reviewForm.description"
+      [class.invalid]="reviewForm.description().invalid() && reviewForm.description().touched()"></textarea>
+    @for (error of reviewForm.description().errors(); track error.kind) {
+    <div class="error">{{ error.message }}</div>
+    }
+  </div>
+  <div class="field">
+    <label>Rating:</label>
+    <input type="number" [formField]="reviewForm.rating" />
+  </div>
+
+  <button [disabled]="reviewForm().invalid()">Submit</button>
+</div>
+
+<div class="model">
+  <h3>Model Value</h3>
+  <pre><code>{{ model() | json }}</code>
+  {{ reviewForm.email().value() }}
+  </pre>
+</div>

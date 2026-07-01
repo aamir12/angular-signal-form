@@ -1,0 +1,15 @@
+<!-- Left Sidebar -->
+<aside class="sidebar">
+  <h2 class="sidebar__title">Forms</h2>
+  <ul class="sidebar__menu">
+    @for(menu of menuItems(); track menu.title) {
+    <li class="sidebar__item">
+      <a [routerLink]="menu.route" routerLinkActive="active" class="sidebar__link">
+        {{ menu.title }}
+      </a>
+    </li>
+    }
+
+
+  </ul>
+</aside>
