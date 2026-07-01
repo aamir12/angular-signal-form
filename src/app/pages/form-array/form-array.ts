@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   applyEach,
+  disabled,
   email,
   Field,
   FieldTree,
@@ -71,6 +72,8 @@ export class SignaleFormArray {
   readonly reviewForm = form(
     this.model,
     (path) => {
+      // it is used to disable entire form
+      disabled(path, { when: (ctx) => ctx.state.submitting() });
       required(path.username, {
         message: 'Username is required',
       });
