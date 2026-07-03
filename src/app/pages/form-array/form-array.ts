@@ -72,7 +72,7 @@ export class SignaleFormArray {
   readonly reviewForm = form(
     this.model,
     (path) => {
-      // it is used to disable entire form
+      // it is used to disable entire form after submit form
       disabled(path, { when: (ctx) => ctx.state.submitting() });
       required(path.username, {
         message: 'Username is required',

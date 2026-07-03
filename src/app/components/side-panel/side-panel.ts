@@ -26,5 +26,9 @@ export class SidePanel {
       title: 'Form Array',
       route: '/form-array',
     },
+    {
+      title: 'Reuseable',
+      route: '/reuseable',
+    },
   ]);
 }

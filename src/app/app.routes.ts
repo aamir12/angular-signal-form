@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'form-array',
     loadComponent: () => import('./pages/form-array/form-array').then((c) => c.SignaleFormArray),
   },
+  {
+    path: 'reuseable',
+    loadComponent: () => import('./pages/resuable/resuable').then((c) => c.Resuable),
+  },
 ];

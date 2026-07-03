@@ -8,3 +8,12 @@ export interface DinnerNestedReview {
   readonly food: ReviewItem;
   readonly service: ReviewItem;
 }
+
+export interface ResuableReview {
+  readonly username: string;
+  readonly role: Role;
+  readonly email: string;
+  readonly description: string;
+  readonly food: ReviewItem;
+  readonly service: ReviewItem;
+}

@@ -1,0 +1,35 @@
+import { disabled, max, min, readonly, schema, validateTree } from '@angular/forms/signals';
+import { ReviewItem } from '../models/common';
+
+export const reviewItemSchema = schema<ReviewItem>((path) => {
+  min(path.rating, 1, {
+    message: 'Min 1',
+  });
+
+  max(path.rating, 5, {
+    message: 'Max 5',
+  });
+
+  readonly(path.rating, { when: (ctx) => ctx.valueOf(path.recommendation) === 'no-opinion' });
+
+  validateTree(path, (ctx) => {
+    const rating = ctx.valueOf(path.rating);
+    const recommendation = ctx.valueOf(path.recommendation);
+    if (rating >= 4 && recommendation === 'not-recommend') {
+      return [
+        {
+          kind: 'rating-conflict',
+          message: 'Rating Conflict',
+          fieldTree: ctx.fieldTreeOf(path.rating),
+        },
+        {
+          kind: 'rating-conflict',
+          message: 'Rating Conflict',
+          fieldTree: ctx.fieldTreeOf(path.recommendation),
+        },
+      ];
+    }
+
+    return undefined;
+  });
+});
