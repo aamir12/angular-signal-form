@@ -29,6 +29,25 @@ export class ReviewsService {
       });
     }
 
+    review.otherEmail.forEach((email, index) => {
+      if (!email.endsWith('@test.com')) {
+        res.push({
+          message: 'Email must end with @test.com',
+          kind: 'email-domain',
+          fieldTree: reviewForm.otherEmail[index],
+        });
+      }
+    });
+
+    // how to add error related to form not related to any field, for example, if the review has more than 5 reviews, we can add an error to the form itself
+    if (review.reviews.length > 5) {
+      res.push({
+        message: 'You can only submit up to 5 reviews.',
+        kind: 'too-many-reviews',
+        fieldTree: reviewForm,
+      });
+    }
+
     return res.length ? res : undefined;
   }
 

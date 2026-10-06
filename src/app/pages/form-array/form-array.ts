@@ -46,6 +46,7 @@ export class SignaleFormArray {
         recommendation: 'recommend',
       },
     ],
+    otherEmail: ['abc.xyz@test.com'],
   });
 
   addReviewItem() {
@@ -66,6 +67,20 @@ export class SignaleFormArray {
     this.model.update((state) => ({
       ...state,
       reviews: state.reviews.filter((r, i) => i !== index),
+    }));
+  }
+
+  removeOtherEmailItem(index: number) {
+    this.model.update((state) => ({
+      ...state,
+      otherEmail: state.otherEmail.filter((r, i) => i !== index),
+    }));
+  }
+
+  addOtherEmailItem() {
+    this.model.update((state) => ({
+      ...state,
+      otherEmail: [...state.otherEmail, ''],
     }));
   }
 
@@ -125,14 +140,23 @@ export class SignaleFormArray {
                 fieldTree: ctx.fieldTreeOf(p.rating),
               },
               {
-                kind: 'rating-conflict',
-                message: 'Rating Conflict',
+                kind: 'rating-recommendation',
+                message: 'Rating and Recommendation Conflict',
                 fieldTree: ctx.fieldTreeOf(p.recommendation),
               },
             ];
           }
 
           return undefined;
+        });
+      });
+      applyEach(path.otherEmail, (p) => {
+        required(p, {
+          message: 'It is required',
+        });
+
+        email(p, {
+          message: 'Email is not in the correct format',
         });
       });
     },

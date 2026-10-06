@@ -22,8 +22,7 @@ export class StarRating implements FormValueControl<number> {
   readonly stars = computed(() => Array.from({ length: this.max() || 5 }, (_, i) => i + 1));
 
   setValue(val: number) {
-    if (this.disabled()) return;
-    if (this.readonly()) return;
+    if (this.disabled() || this.readonly()) return;
     this.value.set(val);
   }
 }

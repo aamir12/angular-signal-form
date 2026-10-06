@@ -13,4 +13,5 @@ export interface DinnerReviewList {
   readonly email: string;
   readonly description: string;
   readonly reviews: ReviewItem[];
+  readonly otherEmail: string[];
 }

@@ -105,6 +105,7 @@
 
   .sub-form,
   app-review-item-form {
+    margin-block: var(--spacing-md);
     border: 2px dashed var(--color-primary-light);
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
@@ -194,4 +195,9 @@
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: var(--spacing-lg);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: end;
 }

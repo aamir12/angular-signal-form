@@ -102,12 +102,12 @@ export class BasicAll {
         return [
           {
             kind: 'conflict-rating',
-            message: 'Not allow to not recomment when you are giving rating above 4',
+            message: 'Not allow to not recommend when you are giving rating above 4',
             fieldTree: ctx.fieldTreeOf(path.rating),
           },
           {
-            kind: 'conflict-rating',
-            message: 'Not allow to not recomment when you are giving rating above 4',
+            kind: 'conflict-recommendation',
+            message: 'Not allow to not recommend when you are giving rating above 4',
             fieldTree: ctx.fieldTreeOf(path.recommendation),
           },
         ];

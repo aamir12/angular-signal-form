@@ -40,7 +40,9 @@
 
     @for(rev of reviewForm.reviews; track $index) {
     <div class="sub-form">
-      <button (click)="removeItem($index)">Remove</button>
+      @if ($index > 0) {
+      <button type="button" (click)="removeItem($index)">Remove</button>
+      }
       <div class="field">
         <label>Aspect:</label>
         <input type="text" [formField]="rev.aspect"
@@ -74,11 +76,36 @@
 
     }
 
-    <button (click)="addReviewItem()">Add Review</button>
+    <button type="button" (click)="addReviewItem()">Add Review</button>
+
+
+    @for(rev of reviewForm.otherEmail; track $index) {
+    <div class="sub-form">
+      @if ($index > 0) {
+      <button type="button" (click)="removeOtherEmailItem($index)">Remove</button>
+      }
+      <div class="field">
+        <label>Email:</label>
+        <input type="email" [formField]="rev" [class.invalid]="rev().invalid() && rev().touched()" />
+        @for(err of rev().errors(); track err.kind) {
+        <div class="error">{{ err.message }}</div>
+        }
+      </div>
+
+    </div>
+    }
+
+    <button type="button" (click)="addOtherEmailItem()">Add Email</button>
 
     <!-- [disabled]="!reviewForm().valid()" -->
     <!-- <button (click)="onSubmit()">Submit</button> -->
-    <button type="submit">Submit</button>
+    <!-- How to show form-level errors -->
+    @if (reviewForm().errors().length > 0) {
+    <div class="error">{{ reviewForm().errors()[0].message }}</div>
+    }
+    <div class="action-buttons">
+      <button type="submit">Submit</button>
+    </div>
 
   </form>
 </div>

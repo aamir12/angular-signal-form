@@ -5,8 +5,10 @@
     <input type="text" [formField]="reviewForm.username"
       [class.invalid]="reviewForm.username().invalid() && reviewForm.username().touched()" />
 
+    @if (reviewForm.username().invalid() && reviewForm.username().touched()) {
     @for (error of reviewForm.username().errors(); track error.kind) {
     <div class="error">{{ error.message }}</div>
+    }
     }
   </div>
   <div class="field">
@@ -21,16 +23,20 @@
     <label>Email:</label>
     <input type="email" [formField]="reviewForm.email"
       [class.invalid]="reviewForm.email().invalid() && reviewForm.email().touched()" />
+    @if (reviewForm.email().invalid() && reviewForm.email().touched()) {
     @for (error of reviewForm.email().errors(); track error.kind) {
     <div class="error">{{ error.message }}</div>
+    }
     }
   </div>
   <div class="field">
     <label>Description:</label>
     <textarea [formField]="reviewForm.description"
       [class.invalid]="reviewForm.description().invalid() && reviewForm.description().touched()"></textarea>
+    @if (reviewForm.description().invalid() && reviewForm.description().touched()) {
     @for (error of reviewForm.description().errors(); track error.kind) {
     <div class="error">{{ error.message }}</div>
+    }
     }
   </div>
   <div class="field">
