@@ -1,5 +1,5 @@
 import { Component, computed, contentChild, effect, input } from '@angular/core';
-import { FormField } from '@angular/forms/signals';
+import { FormField, REQUIRED } from '@angular/forms/signals';
 import { MIN_WORDS } from '../../../schemas/min-words.validator';
 
 @Component({
@@ -19,4 +19,10 @@ export class FieldWrapper<T> {
   readonly minWords = computed(() =>
     this.hasMinWords() ? this.fieldState().metadata(MIN_WORDS)?.() : 0,
   );
+
+  constructor() {
+    effect(() => {
+      console.log(this.label(), ' Has required : ', this.fieldState().hasMetadata(REQUIRED));
+    });
+  }
 }

@@ -17,9 +17,10 @@ import {
   TreeValidationResult,
   validate,
   validateTree,
+  ValidationError,
 } from '@angular/forms/signals';
 import { DinnerReviewList } from '../../models/form-array.model';
-import { ReviewsService } from '../../services/reviews-service';
+import { ReviewErrors, ReviewsService } from '../../services/reviews-service';
 
 @Component({
   selector: 'app-form-array',
@@ -49,6 +50,7 @@ export class SignaleFormArray {
     otherEmail: ['abc.xyz@test.com'],
   });
 
+  readonly submittedSuccessfully = signal(false);
   addReviewItem() {
     this.model.update((state) => ({
       ...state,
@@ -88,7 +90,7 @@ export class SignaleFormArray {
     this.model,
     (path) => {
       // it is used to disable entire form after submit form
-      disabled(path, { when: (ctx) => ctx.state.submitting() });
+      disabled(path, { when: (ctx) => ctx.fieldTree().submitting() });
       required(path.username, {
         message: 'Username is required',
       });
@@ -162,7 +164,17 @@ export class SignaleFormArray {
     },
     {
       submission: {
-        action: this.onFormSubmit.bind(this),
+        // action: async (frm) => {
+        //   console.log('starting to submit the form', frm().value());
+        // },
+        // action: this.onFormSubmit.bind(this), //working
+        action: this.onFormSubmit2.bind(this), //working
+        onInvalid: (frm) => {
+          // to set focus on first invalid field, we can use the following code
+          console.log('The form is not valid, the errors are: ', frm().errorSummary());
+          const firstInvalid = frm().errorSummary()[0];
+          firstInvalid?.fieldTree().focusBoundControl();
+        },
       },
     },
   );
@@ -179,6 +191,16 @@ export class SignaleFormArray {
     return undefined;
   }
 
+  async onFormSubmit2(frm: FieldTree<DinnerReviewList>): Promise<TreeValidationResult> {
+    console.log('starting to submit the form');
+    this.submittedSuccessfully.set(false);
+    const submitResult = await this.reviewsService.submitReview3(frm().value());
+    const treeValidationResult = toTreeValidationResult(submitResult, frm);
+    console.log('Submission completed');
+    if (!treeValidationResult) this.submittedSuccessfully.set(true);
+    return treeValidationResult;
+  }
+
   //button click submition
   // onSubmit() {
   //   submit(this.reviewForm, async (frm) => {
@@ -193,4 +215,31 @@ export class SignaleFormArray {
   //     return undefined;
   //   });
   // }
+}
+
+function toTreeValidationResult(
+  result: ReviewErrors,
+  frm: FieldTree<DinnerReviewList>,
+): TreeValidationResult {
+  if (Object.keys(result).length === 0) return null;
+
+  const res: ValidationError.WithFieldTree[] = [];
+
+  if (result.email) {
+    res.push({
+      kind: 'submit-error',
+      message: result.email,
+      fieldTree: frm.email,
+    });
+  }
+
+  if (result.role) {
+    res.push({
+      kind: 'submit-error',
+      message: result.role,
+      fieldTree: frm.role,
+    });
+  }
+
+  return res;
 }
